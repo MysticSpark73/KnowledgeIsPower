@@ -1,6 +1,9 @@
-﻿using Services.Input;
+﻿using Infrastructure.AssetsManagement;
+using Infrastructure.Factory;
+using Infrastructure.Services;
+using Services.Input;
 
-namespace Infrastructure
+namespace Infrastructure.States
 {
     public class BootstrapState : IState
     {
@@ -8,17 +11,20 @@ namespace Infrastructure
         private const string MainSceneName = "Main";
         
         private readonly GameStateMachine _gameStateMachine;
-        private SceneLoader _sceneLoader;
+        private readonly SceneLoader _sceneLoader;
+        private readonly AllServices _serviceProvider;
 
-        public BootstrapState(GameStateMachine gameStateMachine, SceneLoader sceneLoader)
+        public BootstrapState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, AllServices serviceProvider)
         {
             _gameStateMachine = gameStateMachine;
             _sceneLoader = sceneLoader;
+            _serviceProvider = serviceProvider;
+            
+            RegisterServices();
         }
 
         public void Enter()
         {
-            RegisterServices();
             _sceneLoader.LoadScene(BootstrapSceneName, EnterLoadLevel);
         }
 
@@ -29,7 +35,9 @@ namespace Infrastructure
 
         private void RegisterServices()
         {
-            Game.SetInputService(CreateInputService());
+            _serviceProvider.RegisterSingle<IInputService>(CreateInputService());
+            _serviceProvider.RegisterSingle<IAssetsProvider>(new AssetsProvider());
+            _serviceProvider.RegisterSingle<IGameFactory>(new GameFactory(_serviceProvider.Single<IAssetsProvider>()));
         }
 
         private void EnterLoadLevel() => _gameStateMachine.Enter<LoadLevelState, string>(MainSceneName);
