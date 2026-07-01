@@ -1,5 +1,7 @@
-﻿using DefaultNamespace.Camera;
+﻿using System;
+using DefaultNamespace.Camera;
 using Infrastructure.Factory;
+using Infrastructure.Services.PersistentProgress;
 using Logic;
 using UnityEngine;
 
@@ -13,18 +15,22 @@ namespace Infrastructure.States
         private readonly SceneLoader _sceneLoader;
         private readonly LoadingCurtain _loadingCurtain;
         private readonly IGameFactory _gameFactory;
+        private readonly IPersistentProgressService _progressService;
 
-        public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain, IGameFactory gameFactory)
+        public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain,
+            IGameFactory gameFactory, IPersistentProgressService progressService)
         {
             _gameStateMachine = gameStateMachine;
             _sceneLoader = sceneLoader;
             _loadingCurtain = loadingCurtain;
             _gameFactory = gameFactory;
+            _progressService = progressService;
         }
 
         public void Enter(string payload)
         {
             _loadingCurtain.Show();
+            _gameFactory.Dispose();
             _sceneLoader.LoadScene(payload, OnMainSceneLoaded);
         }
 
@@ -35,12 +41,26 @@ namespace Infrastructure.States
 
         private void OnMainSceneLoaded()
         {
+            InitGameWorld();
+            InformProgressReaders();
+            
+            _gameStateMachine.Enter<GameLoopState>();
+        }
+
+        private void InitGameWorld()
+        {
             GameObject playerSpawnPoint = GameObject.FindGameObjectWithTag(PlayerSpawnPointTag);
             GameObject hero = _gameFactory.CreateHero(playerSpawnPoint.transform.position);
             _gameFactory.CreateHUD();
             SetupCameraFollow(hero);
-            
-            _gameStateMachine.Enter<GameLoopState>();
+        }
+
+        private void InformProgressReaders()
+        {
+            foreach (var progressReader in _gameFactory.ProgressReaders)
+            {
+                progressReader.LoadProgress(_progressService.PlayerProgress);
+            }
         }
 
         private static void SetupCameraFollow(GameObject hero)

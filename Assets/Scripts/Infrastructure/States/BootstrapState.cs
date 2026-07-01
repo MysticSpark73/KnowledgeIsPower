@@ -1,6 +1,8 @@
 ﻿using Infrastructure.AssetsManagement;
 using Infrastructure.Factory;
 using Infrastructure.Services;
+using Infrastructure.Services.PersistentProgress;
+using Infrastructure.Services.SaveLoad;
 using Services.Input;
 
 namespace Infrastructure.States
@@ -25,7 +27,7 @@ namespace Infrastructure.States
 
         public void Enter()
         {
-            _sceneLoader.LoadScene(BootstrapSceneName, EnterLoadLevel);
+            _sceneLoader.LoadScene(BootstrapSceneName, EnterLoadProgressState);
         }
 
         public void Exit()
@@ -37,10 +39,12 @@ namespace Infrastructure.States
         {
             _serviceProvider.RegisterSingle<IInputService>(CreateInputService());
             _serviceProvider.RegisterSingle<IAssetsProvider>(new AssetsProvider());
+            _serviceProvider.RegisterSingle<IPersistentProgressService>(new PersistentProgressService());
             _serviceProvider.RegisterSingle<IGameFactory>(new GameFactory(_serviceProvider.Single<IAssetsProvider>()));
+            _serviceProvider.RegisterSingle<ISaveLoadService>(new SaveLoadService(_serviceProvider.Single<IPersistentProgressService>(), _serviceProvider.Single<IGameFactory>()));
         }
 
-        private void EnterLoadLevel() => _gameStateMachine.Enter<LoadLevelState, string>(MainSceneName);
+        private void EnterLoadProgressState() => _gameStateMachine.Enter<LoadProgressState>();
 
         private IInputService CreateInputService()
         {

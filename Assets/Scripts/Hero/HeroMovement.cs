@@ -1,11 +1,14 @@
-﻿using DefaultNamespace;
+﻿using Data;
+using DefaultNamespace;
 using Infrastructure.Services;
+using Infrastructure.Services.PersistentProgress;
 using Services.Input;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Hero
 {
-    public class HeroMovement : MonoBehaviour
+    public class HeroMovement : MonoBehaviour, ISavedProgress
     {
         [SerializeField] private CharacterController _characterController;
         [SerializeField] private float _speed;
@@ -44,6 +47,34 @@ namespace Hero
             dir.y = 0;
             dir.Normalize();
             transform.forward = dir;
+        }
+
+        public void UpdateProgress(PlayerProgress playerProgress)
+        {
+            playerProgress.WorldData.PositionOnLevel = new PositionOnLevel(GetCurrentLevelName(), transform.position.ToVectorData());
+        }
+
+        public void LoadProgress(PlayerProgress playerProgress)
+        {
+            if (GetCurrentLevelName().Equals(playerProgress.WorldData.PositionOnLevel.levelName))
+            {
+                var savedPosition = playerProgress.WorldData.PositionOnLevel;
+                if(savedPosition.position == null) return;
+                
+                Warp(savedPosition.position);
+            }
+        }
+
+        private void Warp(Vector3Data position)
+        {
+            _characterController.enabled = false;
+            transform.position = position.ToVector3().AddY(_characterController.height * .5f);
+            _characterController.enabled = true;
+        }
+
+        private static string GetCurrentLevelName()
+        {
+            return SceneManager.GetActiveScene().name;
         }
     }
 }
