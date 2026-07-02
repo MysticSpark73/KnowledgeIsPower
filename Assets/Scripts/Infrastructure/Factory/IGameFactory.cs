@@ -10,7 +10,9 @@ namespace Infrastructure.Factory
     {
         GameObject CreateHero(Vector3 position);
         void CreateHUD();
+        event Action HeroCreated;
         List<ISavedProgressReader> ProgressReaders { get; }
         List<ISavedProgress> ProgressWriters { get; }
+        GameObject HeroObject { get; }
     }
 }
