@@ -29,7 +29,7 @@ namespace Infrastructure.Factory
             return HeroObject;
         }
 
-        public void CreateHUD() => InstantiateRegistered(AssetsPath.HUDPrefabPath);
+        public GameObject CreateHUD() => InstantiateRegistered(AssetsPath.HUDPrefabPath);
 
         private GameObject InstantiateRegistered(string heroPrefabPath, Vector3 position)
         {

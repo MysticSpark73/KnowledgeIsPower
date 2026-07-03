@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using Hero;
 using Infrastructure.Factory;
 using Infrastructure.Services;
 using UnityEngine;
@@ -11,6 +12,7 @@ namespace Enemies
         [SerializeField] private float _attackCooldown = 3f;
         [SerializeField] private float _weaponRadius = .5f;
         [SerializeField] public float _attackRange = .5f;
+        [SerializeField] private float _damage = 10;
 
         private IGameFactory _gameFactory;
         private Transform _heroTransform;
@@ -59,6 +61,8 @@ namespace Enemies
             if (Hit(out Collider hit))
             {
                 PhysicsDebug.DrawMultidirectionalSphere(GetAttackPoint(), _weaponRadius, Color.red, 1);
+                
+                hit.transform.GetComponent<HeroHealth>().TakeDamage(_damage);
             }
         }
 

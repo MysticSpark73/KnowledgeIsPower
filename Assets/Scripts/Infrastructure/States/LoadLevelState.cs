@@ -1,8 +1,10 @@
 ﻿using System;
 using DefaultNamespace.Camera;
+using Hero;
 using Infrastructure.Factory;
 using Infrastructure.Services.PersistentProgress;
 using Logic;
+using UI;
 using UnityEngine;
 
 namespace Infrastructure.States
@@ -51,7 +53,10 @@ namespace Infrastructure.States
         {
             GameObject playerSpawnPoint = GameObject.FindGameObjectWithTag(PlayerSpawnPointTag);
             GameObject hero = _gameFactory.CreateHero(playerSpawnPoint.transform.position);
-            _gameFactory.CreateHUD();
+            GameObject hud = _gameFactory.CreateHUD();
+            ActorUI actorUI = hud.GetComponent<ActorUI>();
+            actorUI.Construct(hero.GetComponent<HeroHealth>());
+            
             SetupCameraFollow(hero);
         }
 

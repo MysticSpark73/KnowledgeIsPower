@@ -34,6 +34,9 @@ namespace Infrastructure.States
             _saveLoadService.LoadProgress() ??
             CreatePlayerProgress(MainSceneName);
 
-        private PlayerProgress CreatePlayerProgress(string defaultSceneName) => new(defaultSceneName);
+        private PlayerProgress CreatePlayerProgress(string defaultSceneName)
+        {
+            return new PlayerProgress(defaultSceneName);
+        }
     }
 }

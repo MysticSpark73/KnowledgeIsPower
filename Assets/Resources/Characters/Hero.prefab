@@ -577,16 +577,19 @@ PrefabInstance:
       addedObject: {fileID: 8869259492507741794}
     - targetCorrespondingSourceObject: {fileID: 1782702501690864755, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 7491463834920730368}
+    - targetCorrespondingSourceObject: {fileID: 1782702501690864755, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2742600053084726790}
+    - targetCorrespondingSourceObject: {fileID: 1782702501690864755, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 8900067490611415233}
     - targetCorrespondingSourceObject: {fileID: 1782702501690864755, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
       insertIndex: -1
       addedObject: {fileID: 3611892712625185041}
     - targetCorrespondingSourceObject: {fileID: 1782702501690864755, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 7491463834920730368}
-    - targetCorrespondingSourceObject: {fileID: 1782702501690864755, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 2742600053084726790}
+      addedObject: {fileID: 182269942947380380}
   m_SourcePrefab: {fileID: 100100000, guid: 60770bdb4dc667c45bea53db0339dc05, type: 3}
 --- !u!95 &854668342938822934 stripped
 Animator:
@@ -623,34 +626,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &8900067490611415233
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3198444239606045385}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: eafdea0b188044aaa3703fb5c5327a3d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Hero.HeroMovement
-  _characterController: {fileID: 8869259492507741794}
-  _speed: 5
---- !u!114 &3611892712625185041
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3198444239606045385}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4eea8ba48fe04a37b786b6fa31468091, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Hero.HeroAnimator
-  _animator: {fileID: 854668342938822934}
-  _characterController: {fileID: 8869259492507741794}
 --- !u!54 &7491463834920730368
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -699,3 +674,44 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.8, y: 2, z: 0.8}
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &8900067490611415233
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3198444239606045385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eafdea0b188044aaa3703fb5c5327a3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Hero.HeroMovement
+  _characterController: {fileID: 8869259492507741794}
+  _speed: 5
+--- !u!114 &3611892712625185041
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3198444239606045385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4eea8ba48fe04a37b786b6fa31468091, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Hero.HeroAnimator
+  _animator: {fileID: 854668342938822934}
+  _characterController: {fileID: 8869259492507741794}
+--- !u!114 &182269942947380380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3198444239606045385}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f70e27831ed4f94992d9f917a5e826b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Hero.HeroHealth
+  _heroAnimator: {fileID: 3611892712625185041}

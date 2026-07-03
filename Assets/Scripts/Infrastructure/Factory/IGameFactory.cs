@@ -9,7 +9,7 @@ namespace Infrastructure.Factory
     public interface IGameFactory : IService, IDisposable
     {
         GameObject CreateHero(Vector3 position);
-        void CreateHUD();
+        GameObject CreateHUD();
         event Action HeroCreated;
         List<ISavedProgressReader> ProgressReaders { get; }
         List<ISavedProgress> ProgressWriters { get; }
