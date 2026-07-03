@@ -6,8 +6,9 @@ namespace Hero
     {
         [SerializeField] private HeroHealth _heroHealth;
         [SerializeField] private HeroMovement _heroMovement;
-        [SerializeField] private HeroAnimator _heroAnimator;
+        [SerializeField] private HeroAttack _heroAttack;
         [SerializeField] private GameObject _deathFx;
+        
         private bool _isDead;
 
         private void Start()
@@ -32,6 +33,7 @@ namespace Hero
         {
             _isDead = true;
             _heroMovement.enabled = false;
+            _heroAttack.enabled = false;
             Instantiate(_deathFx, transform.position, Quaternion.identity);
         }
     }

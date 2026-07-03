@@ -5,6 +5,8 @@ namespace Hero
 {
     public class HeroAnimator : MonoBehaviour
     {
+        public bool IsAttacking => _isAttacking;
+        
         private static readonly int IdleHash = Animator.StringToHash("Idle");
         private static readonly int DeathHash = Animator.StringToHash("Death");
         private static readonly int HurtHash = Animator.StringToHash("Hurt");
@@ -20,15 +22,24 @@ namespace Hero
         private int UpperBodyLayer;
         private int LowerBodyLayer;
         private bool _isRunning;
+        private bool _isDead;
+        private bool _isAttacking;
+        
+        private bool IsIdle => !_isRunning && !_isDead;
 
         public void SetDeath(bool isDeath)
         {
-            _animator.SetBool(DeathHash, isDeath);
-            _animator.SetBool(IdleHash, !isDeath);
+            _isDead = isDeath;
+            _animator.SetBool(DeathHash, _isDead);
+            _animator.SetBool(IdleHash, !_isDead);
         }
 
         public void Hurt() => _animator.SetTrigger(HurtHash);
-        public void Attack() => _animator.SetTrigger(AttackHash);
+        public void Attack()
+        {
+            _isAttacking = true;
+            _animator.SetTrigger(AttackHash);
+        }
 
         private void Awake()
         {
@@ -54,7 +65,12 @@ namespace Hero
             _isRunning = _characterController.velocity.sqrMagnitude > Constants.FloatApproximation;
 
             _animator.SetBool(RunHash, _isRunning);
-            _animator.SetBool(IdleHash, !_isRunning);
+            _animator.SetBool(IdleHash, IsIdle);
+        }
+
+        private void AttackEnd()
+        {
+            _isAttacking = false;
         }
     }
 }

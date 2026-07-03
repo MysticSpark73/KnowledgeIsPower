@@ -1,7 +1,7 @@
 ﻿using System.Linq;
-using Hero;
 using Infrastructure.Factory;
 using Infrastructure.Services;
+using Logic;
 using UnityEngine;
 
 namespace Enemies
@@ -62,7 +62,7 @@ namespace Enemies
             {
                 PhysicsDebug.DrawMultidirectionalSphere(GetAttackPoint(), _weaponRadius, Color.red, 1);
                 
-                hit.transform.GetComponent<HeroHealth>().TakeDamage(_damage);
+                hit.transform.GetComponent<IHealth>().TakeDamage(_damage);
             }
         }
 
