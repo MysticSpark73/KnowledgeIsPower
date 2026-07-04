@@ -8,12 +8,15 @@ namespace Data
         public WorldData WorldData;
         public HeroState HeroState;
         public HeroStats HeroStats;
+        public KillData KillData;
 
         public PlayerProgress(string defaultSceneName)
         {
             WorldData = new WorldData(defaultSceneName);
             HeroState = new HeroState();
             HeroStats = new HeroStats();
+            KillData = new KillData();
         }
+
     }
 }
