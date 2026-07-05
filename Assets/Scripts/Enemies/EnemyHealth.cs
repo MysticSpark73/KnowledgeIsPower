@@ -36,5 +36,11 @@ namespace Enemies
             
             HealthChanged?.Invoke();
         }
+
+        public void InitializeValues(float health, float maxHealth)
+        {
+            _currentHealth = health;
+            _maxHealth = maxHealth;
+        }
     }
 }

@@ -1,6 +1,4 @@
 ﻿using System.Linq;
-using Infrastructure.Factory;
-using Infrastructure.Services;
 using Logic;
 using UnityEngine;
 
@@ -9,12 +7,12 @@ namespace Enemies
     public class Attack : MonoBehaviour
     {
         [SerializeField] private EnemyAnimator _enemyAnimator;
-        [SerializeField] private float _attackCooldown = 3f;
-        [SerializeField] private float _weaponRadius = .5f;
-        [SerializeField] public float _attackRange = .5f;
-        [SerializeField] private float _damage = 10;
+        
+        private float _attackCooldown = 3f;
+        private float _weaponRadius = .5f;
+        public float _attackRange = .5f;
+        private float _damage = 10;
 
-        private IGameFactory _gameFactory;
         private Transform _heroTransform;
         private Collider[] _hits = new Collider[1];
         private bool _isAttacking;
@@ -22,12 +20,17 @@ namespace Enemies
         private float _cooldownTime;
         private int _layerMask;
 
+        public void Initialize(Transform heroTransform, float attackCooldown, float weaponRadius, float attackRange, float damage)
+        {
+            _heroTransform = heroTransform;
+            _attackCooldown = attackCooldown;
+            _weaponRadius = weaponRadius;
+            _attackRange = attackRange;
+            _damage = damage;
+        }
 
         private void Awake()
         {
-            _gameFactory = AllServices.Container.Single<IGameFactory>();
-            _gameFactory.HeroCreated += OnHeroCreated;
-            
             _layerMask = 1 << LayerMask.NameToLayer("Player");
         }
 
@@ -37,17 +40,7 @@ namespace Enemies
             else _cooldownTime -= Time.deltaTime;
         }
 
-        private void OnDestroy()
-        {
-            _gameFactory.HeroCreated -= OnHeroCreated;
-        }
-
         private bool CanAttack() => _isAttackEnabled && !_isAttacking && _cooldownTime <= 0;
-
-        private void OnHeroCreated()
-        {
-            _heroTransform = _gameFactory.HeroObject.transform;
-        }
 
         private void StartAttack()
         {

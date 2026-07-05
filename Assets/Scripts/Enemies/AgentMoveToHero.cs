@@ -9,6 +9,7 @@ namespace Enemies
         
         private const float MinDistance = 1f;
 
+
         private void Update()
         {
             if (_heroTransform == null) return;
