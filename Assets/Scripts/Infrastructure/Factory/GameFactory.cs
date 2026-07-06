@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using Data;
 using Enemies;
 using Infrastructure.AssetsManagement;
 using Infrastructure.Services.PersistentProgress;
+using Services;
 using StaticData;
 using UI;
 using UnityEngine;
@@ -14,16 +16,20 @@ namespace Infrastructure.Factory
     {
         private readonly IAssetsProvider _assetsProvider;
         private readonly IStaticDataService _staticDataService;
+        private readonly IPersistentProgressService _progressService;
+        private readonly IRandomService _randomService;
 
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
 
         private GameObject HeroObject { get; set; }
 
-        public GameFactory(IAssetsProvider assetsProvider, IStaticDataService staticDataService)
+        public GameFactory(IAssetsProvider assetsProvider, IStaticDataService staticDataService,  IPersistentProgressService progressService, IRandomService randomService)
         {
             _assetsProvider = assetsProvider;
             _staticDataService = staticDataService;
+            _randomService = randomService;
+            _progressService = progressService;
         }
 
         public GameObject CreateHero(Vector3 position)
@@ -32,7 +38,23 @@ namespace Infrastructure.Factory
             return HeroObject;
         }
 
-        public GameObject CreateHUD() => InstantiateRegistered(AssetsPath.HUDPrefabPath);
+        public GameObject CreateHUD()
+        {
+            GameObject hud = InstantiateRegistered(AssetsPath.HUDPrefabPath);
+            InitializeLootCounter(hud);
+            return hud;
+        }
+
+        private void InitializeLootCounter(GameObject hud)
+        {
+            LootCounter lootCounter = hud.GetComponentInChildren<LootCounter>();
+            if (lootCounter == null)
+            {
+                Debug.LogError($"LootCounter {hud.name} not found!");
+                return;
+            }
+            lootCounter.Initialize(_progressService.PlayerProgress.WorldData);
+        }
 
         public GameObject CreateMonster(MonsterTypeID monsterTypeID, Transform parent)
         {
@@ -49,8 +71,20 @@ namespace Infrastructure.Factory
             InitializeMonsterMovement(monster);
             InitializeMonsterNavMesh(monster, monsterData);
             InitializeMonsterAttack(monster, monsterData);
+            InitializeMonsterLoot(monster, monsterData);
 
             return monster;
+        }
+
+        public LootTrigger CreateLoot()
+        {
+            GameObject lootObject = InstantiateRegistered(AssetsPath.Loot);
+            if (lootObject.TryGetComponent<LootTrigger>(out LootTrigger lootTrigger))
+            {
+                lootTrigger.Initialize(_progressService.PlayerProgress.WorldData);
+                return lootTrigger;
+            }
+            return null;
         }
 
         private void InitializeMonsterHealth(GameObject monster, MonsterStaticData monsterData)
@@ -87,7 +121,7 @@ namespace Infrastructure.Factory
             RotateToHero rotateToHero = monster.GetComponent<RotateToHero>();
             if (rotateToHero == null)
             {
-                Debug.LogError($"Monster {monster.name} does not have RotateToHero component!", monster);
+                Debug.LogWarning($"Monster {monster.name} does not have RotateToHero component!", monster);
                 return;
             }
             
@@ -116,6 +150,18 @@ namespace Infrastructure.Factory
 
             attack.Initialize(HeroObject.transform, monsterData.AttackCooldown, monsterData.WeaponRadius,
                 monsterData.AttackRange, monsterData.Damage);
+        }
+
+        private void InitializeMonsterLoot(GameObject monster, MonsterStaticData monsterData)
+        {
+            LootSpawner lootSpawner = monster.GetComponentInChildren<LootSpawner>();
+            if (lootSpawner == null)
+            {
+                Debug.LogError($"Monster {monster.name} does not have LootSpawner component!");
+                return;
+            }
+            lootSpawner.Initialize(this, _randomService);
+            lootSpawner.SetLoot(monsterData.MinLoot, monsterData.MaxLoot);
         }
 
         private GameObject InstantiateRegistered(string heroPrefabPath, Vector3 position)

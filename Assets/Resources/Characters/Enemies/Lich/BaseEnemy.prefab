@@ -163,6 +163,7 @@ Transform:
   - {fileID: 7754587079891926208}
   - {fileID: 6344411873370854941}
   - {fileID: 6083968849039250053}
+  - {fileID: 747566691294078018}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &4298479808437585060
@@ -277,10 +278,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Enemies.Attack
   _enemyAnimator: {fileID: 534051417172468696}
-  _attackCooldown: 3
-  _weaponRadius: 0.5
   _attackRange: 0.5
-  _damage: 10
 --- !u!114 &7935965964861838427
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -324,6 +322,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemies.EnemyDeath
   _enemyHealth: {fileID: 4789759545197191173}
   _enemyAnimator: {fileID: 534051417172468696}
+  _follow: {fileID: 0}
 --- !u!114 &4234189168909457868
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -412,6 +411,51 @@ MonoBehaviour:
   m_FillOrigin: 1
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &4948083623830117791
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 747566691294078018}
+  - component: {fileID: 596627267458135494}
+  m_Layer: 0
+  m_Name: LootSpawner
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &747566691294078018
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4948083623830117791}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 4244057618783920210}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &596627267458135494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4948083623830117791}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 064fdd3abe7a45dcaa2e1e2bbe026808, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Enemies.LootSpawner
+  _enemyDeath: {fileID: 7793421311807043431}
 --- !u!1 &5571371969909917129
 GameObject:
   m_ObjectHideFlags: 0

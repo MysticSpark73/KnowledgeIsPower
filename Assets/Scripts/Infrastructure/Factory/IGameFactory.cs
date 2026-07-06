@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Enemies;
 using Infrastructure.Services;
 using Infrastructure.Services.PersistentProgress;
 using StaticData;
@@ -14,5 +15,6 @@ namespace Infrastructure.Factory
         List<ISavedProgressReader> ProgressReaders { get; }
         List<ISavedProgress> ProgressWriters { get; }
         GameObject CreateMonster(MonsterTypeID monsterTypeID, Transform parent);
+        LootTrigger CreateLoot();
     }
 }

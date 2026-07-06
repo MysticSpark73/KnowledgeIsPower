@@ -12,6 +12,10 @@ namespace StaticData
         [Range(0.5f, 1f)] public float WeaponRadius;
         [Range(0.5f, 1f)] public float AttackRange;
         [Range(1, 30)] public float Damage;
+        [Header("Loot")]
+        public int MinLoot;
+        public int MaxLoot;
+        [Header("Prefab")]
         public GameObject Prefab;
     }
 }

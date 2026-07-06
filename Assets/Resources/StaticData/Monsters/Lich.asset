@@ -19,4 +19,6 @@ MonoBehaviour:
   WeaponRadius: 0.5
   AttackRange: 0.5
   Damage: 10
+  MinLoot: 1
+  MaxLoot: 10
   Prefab: {fileID: 2291113173425709629, guid: f190c9bac4262ac4780221feba4ca5b1, type: 3}
