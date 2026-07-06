@@ -708,6 +708,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Hero.HeroAnimator
   _animator: {fileID: 854668342938822934}
   _characterController: {fileID: 8869259492507741794}
+  _attackClip: {fileID: -3619599080133192075, guid: 3d7c10dfb76b352458c6ee3cf1acd54f, type: 3}
 --- !u!114 &182269942947380380
 MonoBehaviour:
   m_ObjectHideFlags: 0

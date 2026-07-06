@@ -15,7 +15,6 @@ namespace Enemies
 
         private Transform _heroTransform;
         private Collider[] _hits = new Collider[1];
-        private bool _isAttacking;
         private bool _isAttackEnabled;
         private float _cooldownTime;
         private int _layerMask;
@@ -32,6 +31,7 @@ namespace Enemies
         private void Awake()
         {
             _layerMask = 1 << LayerMask.NameToLayer("Player");
+            _enemyAnimator.OnAttackEnd += OnAttackEnded;
         }
 
         private void Update()
@@ -40,11 +40,15 @@ namespace Enemies
             else _cooldownTime -= Time.deltaTime;
         }
 
-        private bool CanAttack() => _isAttackEnabled && !_isAttacking && _cooldownTime <= 0;
+        private void OnDestroy()
+        {
+            _enemyAnimator.OnAttackEnd -= OnAttackEnded;
+        }
+
+        private bool CanAttack() => _isAttackEnabled && !_enemyAnimator.IsAttacking && _cooldownTime <= 0;
 
         private void StartAttack()
         {
-            _isAttacking = true;
             transform.LookAt(_heroTransform);
             _enemyAnimator.PlayAttack();
         }
@@ -62,7 +66,6 @@ namespace Enemies
         private void OnAttackEnded()
         {
             _cooldownTime = _attackCooldown;
-            _isAttacking = false;
         }
 
         private bool Hit(out Collider collider)

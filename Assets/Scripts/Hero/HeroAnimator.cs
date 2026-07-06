@@ -1,4 +1,6 @@
-﻿using DefaultNamespace;
+﻿using System.Collections;
+using System.Linq;
+using DefaultNamespace;
 using UnityEngine;
 
 namespace Hero
@@ -6,7 +8,7 @@ namespace Hero
     public class HeroAnimator : MonoBehaviour
     {
         public bool IsAttacking => _isAttacking;
-        
+
         private static readonly int IdleHash = Animator.StringToHash("Idle");
         private static readonly int DeathHash = Animator.StringToHash("Death");
         private static readonly int HurtHash = Animator.StringToHash("Hurt");
@@ -18,14 +20,30 @@ namespace Hero
 
         [SerializeField] private Animator _animator;
         [SerializeField] private CharacterController _characterController;
+        [SerializeField] private AnimationClip _attackClip;
+
+        private Coroutine _attackRoutine = null;
 
         private int UpperBodyLayer;
         private int LowerBodyLayer;
+        private float _attackAnimationDuration;
         private bool _isRunning;
         private bool _isDead;
         private bool _isAttacking;
         
         private bool IsIdle => !_isRunning && !_isDead;
+
+        private void Awake()
+        {
+            SetupLayers();
+            InitializeAttackDuration();
+            _animator.SetBool(IdleHash, _isRunning);
+        }
+
+        private void Update()
+        {
+            UpdateRunState();
+        }
 
         public void SetDeath(bool isDeath)
         {
@@ -35,21 +53,18 @@ namespace Hero
         }
 
         public void Hurt() => _animator.SetTrigger(HurtHash);
+
         public void Attack()
         {
             _isAttacking = true;
             _animator.SetTrigger(AttackHash);
+            StartAttackTimer();
         }
 
-        private void Awake()
+        private void StartAttackTimer()
         {
-            SetupLayers();
-            _animator.SetBool(IdleHash, _isRunning);
-        }
-
-        private void Update()
-        {
-            UpdateRunState();
+            if (_attackRoutine != null) StopCoroutine(_attackRoutine);
+            StartCoroutine(AttackRoutine());
         }
 
         private void SetupLayers()
@@ -60,6 +75,13 @@ namespace Hero
             _animator.SetLayerWeight(LowerBodyLayer, 1);
         }
 
+        private void InitializeAttackDuration()
+        {
+            var attackClip = _animator.runtimeAnimatorController.animationClips.FirstOrDefault(i =>
+                i.name.Equals(_attackClip.name));
+            _attackAnimationDuration = attackClip?.length ?? 1f;
+        }
+
         private void UpdateRunState()
         {
             _isRunning = _characterController.velocity.sqrMagnitude > Constants.FloatApproximation;
@@ -68,8 +90,9 @@ namespace Hero
             _animator.SetBool(IdleHash, IsIdle);
         }
 
-        private void AttackEnd()
+        private IEnumerator AttackRoutine()
         {
+            yield return new WaitForSeconds(_attackAnimationDuration);
             _isAttacking = false;
         }
     }

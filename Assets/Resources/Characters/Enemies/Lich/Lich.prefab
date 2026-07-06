@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 534051417172468696, guid: 1892591c7141df04fab0b2a616eda3f9, type: 3}
+      propertyPath: _attackClip
+      value: 
+      objectReference: {fileID: 7400000, guid: ce43f40fc2027a949a58e385c6a2cd1f, type: 3}
     - target: {fileID: 4244057618783920210, guid: 1892591c7141df04fab0b2a616eda3f9, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
