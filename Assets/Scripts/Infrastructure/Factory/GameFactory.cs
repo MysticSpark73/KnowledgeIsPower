@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using Data;
 using Enemies;
 using Infrastructure.AssetsManagement;
 using Infrastructure.Services.PersistentProgress;
@@ -32,6 +31,16 @@ namespace Infrastructure.Factory
             _progressService = progressService;
         }
 
+        public void Register(ISavedProgressReader progressReader)
+        {
+            ProgressReaders.Add(progressReader);
+            
+            if (progressReader is ISavedProgress savedProgress)
+            {
+                ProgressWriters.Add(savedProgress);
+            }
+        }
+
         public GameObject CreateHero(Vector3 position)
         {
             HeroObject = InstantiateRegistered(AssetsPath.HeroPrefabPath, position);
@@ -53,7 +62,7 @@ namespace Infrastructure.Factory
                 Debug.LogError($"LootCounter {hud.name} not found!");
                 return;
             }
-            lootCounter.Initialize(_progressService.PlayerProgress.WorldData);
+            Register(lootCounter);
         }
 
         public GameObject CreateMonster(MonsterTypeID monsterTypeID, Transform parent)
@@ -164,34 +173,25 @@ namespace Infrastructure.Factory
             lootSpawner.SetLoot(monsterData.MinLoot, monsterData.MaxLoot);
         }
 
-        private GameObject InstantiateRegistered(string heroPrefabPath, Vector3 position)
+        private GameObject InstantiateRegistered(string path, Vector3 position)
         {
-            GameObject heroObject = _assetsProvider.InstantiatePrefabFromResources(heroPrefabPath, position);
-            RegisterProgressWatchers(heroObject);
-            return heroObject;
-        }
-        private GameObject InstantiateRegistered(string heroPrefabPath)
-        {
-            GameObject heroObject = _assetsProvider.InstantiatePrefabFromResources(heroPrefabPath);
-            RegisterProgressWatchers(heroObject);
-            return heroObject;
+            GameObject gameObject = _assetsProvider.InstantiatePrefabFromResources(path, position);
+            RegisterProgressWatchers(gameObject);
+            return gameObject;
         }
 
-        private void RegisterProgressWatchers(GameObject heroObject)
+        private GameObject InstantiateRegistered(string path)
         {
-            foreach (var progressReader in heroObject.transform.GetComponentsInChildren<ISavedProgressReader>())
+            GameObject gameObject = _assetsProvider.InstantiatePrefabFromResources(path);
+            RegisterProgressWatchers(gameObject);
+            return gameObject;
+        }
+
+        private void RegisterProgressWatchers(GameObject gameObject)
+        {
+            foreach (var progressReader in gameObject.transform.GetComponentsInChildren<ISavedProgressReader>())
             {
                 Register(progressReader);
-            }
-        }
-
-        private void Register(ISavedProgressReader progressReader)
-        {
-            ProgressReaders.Add(progressReader);
-            
-            if (progressReader is ISavedProgress savedProgress)
-            {
-                ProgressWriters.Add(savedProgress);
             }
         }
 

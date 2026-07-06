@@ -11,6 +11,7 @@ namespace Data
         public WorldData(string defaultSceneName)
         {
             PositionOnLevel = new PositionOnLevel(defaultSceneName);
+            LootData = new LootSaveData();
         }
 
     }

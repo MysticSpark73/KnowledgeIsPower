@@ -50,10 +50,6 @@ namespace Enemies
             lootTrigger.SetLootData(CreateLootData());
         }
 
-        private LootData CreateLootData() =>
-            new()
-            {
-                Value = _randomService.Next(_min, _max)
-            };
+        private LootData CreateLootData() => new(_randomService.Next(_min, _max));
     }
 }

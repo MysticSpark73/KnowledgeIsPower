@@ -1,4 +1,6 @@
-﻿using DefaultNamespace.Camera;
+﻿using Data;
+using DefaultNamespace.Camera;
+using Enemies;
 using Hero;
 using Infrastructure.Factory;
 using Infrastructure.Services.PersistentProgress;
@@ -52,6 +54,7 @@ namespace Infrastructure.States
         private void InitGameWorld()
         {
             InitSpawners();
+            SpawnUnclaimedLoot();
             GameObject playerSpawnPoint = GameObject.FindGameObjectWithTag(PlayerSpawnPointTag);
             GameObject hero = _gameFactory.CreateHero(playerSpawnPoint.transform.position);
             GameObject hud = _gameFactory.CreateHUD();
@@ -67,8 +70,20 @@ namespace Infrastructure.States
             {
                 var spawner = spawnerObject.GetComponent<EnemySpawner>();
                 if (spawner == null) continue;
-                _gameFactory.ProgressReaders.Add(spawner);
+                _gameFactory.Register(spawner);
             }
+        }
+
+        private void SpawnUnclaimedLoot()
+        {
+            foreach (var unclaimedLoot in _progressService.PlayerProgress.WorldData.LootData.UnclaimedLootDatas)
+            {
+                LootTrigger loot = _gameFactory.CreateLoot();
+                loot.SetLootData(new LootData(unclaimedLoot.Value));
+                loot.transform.position = unclaimedLoot.Position.ToVector3();
+                loot.transform.rotation = Quaternion.Euler(unclaimedLoot.Rotation.ToVector3());
+            }
+            _progressService.PlayerProgress.WorldData.LootData.UnclaimedLootDatas.Clear();
         }
 
         private void InformProgressReaders()

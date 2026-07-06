@@ -1,24 +1,30 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using Data;
+using Infrastructure.Services.PersistentProgress;
 using TMPro;
 using UnityEngine;
 
 namespace Enemies
 {
-    public class LootTrigger : MonoBehaviour
+    public class LootTrigger : MonoBehaviour, ISavedProgress
     {
         [SerializeField] private GameObject _skull;
         [SerializeField] private GameObject _pickupFx;
         [SerializeField] private TextMeshPro _lootText;
         [SerializeField] private GameObject _pickupPopup;
+        private int _hash;
         
         private LootData _lootData;
-        private bool _pickedUp;
+
+        private bool _isPickedUp;
+
         private WorldData _worldData;
 
         public void Initialize(WorldData worldData)
         {
             _worldData = worldData;
+            _hash = $"{gameObject.scene.name}_{transform.position}_{DateTime.Now.Millisecond}".GetHashCode();
         }
 
         public void SetLootData(LootData lootData) => _lootData = lootData;
@@ -27,8 +33,8 @@ namespace Enemies
 
         private void Pickup()
         {
-            if (_pickedUp) return;
-            _pickedUp = true;
+            if (_isPickedUp) return;
+            _isPickedUp = true;
             
             UpdateScore();
             HideVisuals();
@@ -38,6 +44,18 @@ namespace Enemies
         }
 
         private void UpdateScore() => _worldData.LootData.AddScore(_lootData);
+
+        public void LoadProgress(PlayerProgress playerProgress) { }
+
+        public void UpdateProgress(PlayerProgress playerProgress)
+        {
+            if (!_isPickedUp)
+            {
+                playerProgress.WorldData.LootData.AddUnclaimedLoot(
+                    new LootSaveData.UnclaimedLootData(_hash.ToString(), _lootData.Value, transform.position,
+                        transform.rotation.eulerAngles));
+            }
+        }
 
         private void HideVisuals() => _skull.SetActive(false);
 

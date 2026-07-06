@@ -31,13 +31,9 @@ namespace Hero
 
         private void Update()
         {
-            if (_inputService.IsAttackButtonClicked()/* && !_heroAnimator.IsAttacking*/)
+            if (_inputService.IsAttackButtonClicked() && !_heroAnimator.IsAttacking)
             {
-                Debug.Log($"IsAttacking = {_heroAnimator.IsAttacking}");
-                if (!_heroAnimator.IsAttacking)
-                {
-                    _heroAnimator.Attack();
-                }
+                _heroAnimator.Attack();
             }
         }
 

@@ -16,5 +16,6 @@ namespace Infrastructure.Factory
         List<ISavedProgress> ProgressWriters { get; }
         GameObject CreateMonster(MonsterTypeID monsterTypeID, Transform parent);
         LootTrigger CreateLoot();
+        void Register(ISavedProgressReader progressReader);
     }
 }

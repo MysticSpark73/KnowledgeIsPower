@@ -45,7 +45,7 @@ namespace Editor
         [Obsolete]
         private bool IsPrefab(UniqueID uniqueId) => uniqueId.gameObject.scene.rootCount == 0;
 
-        private void Generate(UniqueID uniqueId)
+        public void Generate(UniqueID uniqueId)
         {
             uniqueId.SetId($"{uniqueId.gameObject.scene.name}_{Guid.NewGuid().ToString()}");
 

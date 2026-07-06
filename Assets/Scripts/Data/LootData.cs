@@ -6,5 +6,9 @@ namespace Data
     public class LootData
     {
         public int Value;
+        public LootData(int value)
+        {
+            Value = value;
+        }
     }
 }

@@ -1,5 +1,4 @@
-﻿using System;
-using Data;
+﻿using Data;
 using Enemies;
 using Infrastructure.Factory;
 using Infrastructure.Services;
@@ -15,13 +14,12 @@ namespace Logic
         [SerializeField] private UniqueID _uniqueID;
         [SerializeField] private bool _enemySlain;
         
-        private string _id;
+        private string _id => _uniqueID.ID;
         private IGameFactory _factory;
         private EnemyDeath _enemyDeath;
 
         private void Awake()
         {
-            _id = _uniqueID.ID;
             _factory = AllServices.Container.Single<IGameFactory>();
         }
 
