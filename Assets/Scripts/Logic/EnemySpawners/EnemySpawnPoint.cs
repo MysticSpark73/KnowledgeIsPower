@@ -1,31 +1,25 @@
 ﻿using Data;
 using Enemies;
 using Infrastructure.Factory;
-using Infrastructure.Services;
 using Infrastructure.Services.PersistentProgress;
 using StaticData;
 using UnityEngine;
 
-namespace Logic
+namespace Logic.EnemySpawners
 {
-    public class EnemySpawner : MonoBehaviour, ISavedProgress
+    public class EnemySpawnPoint : MonoBehaviour, ISavedProgress
     {
         [SerializeField] private MonsterTypeID _monsterTypeID;
-        [SerializeField] private UniqueID _uniqueID;
         [SerializeField] private bool _enemySlain;
         
-        private string _id => _uniqueID.ID;
+        private string ID { get; set; }
+        
         private IGameFactory _factory;
         private EnemyDeath _enemyDeath;
 
-        private void Awake()
-        {
-            _factory = AllServices.Container.Single<IGameFactory>();
-        }
-
         public void LoadProgress(PlayerProgress playerProgress)
         {
-            if (playerProgress.KillData.clearedSpawnerIds.Contains(_id))
+            if (playerProgress.KillData.clearedSpawnerIds.Contains(ID))
             {
                 _enemySlain = true;
             }
@@ -33,6 +27,13 @@ namespace Logic
             {
                 SpawnEnemy();
             }
+        }
+
+        public void InitializeFromFactory(string id, MonsterTypeID monsterTypeID, IGameFactory factory)
+        {
+            ID = id;
+            _monsterTypeID = monsterTypeID;
+            _factory = factory;
         }
 
         private void SpawnEnemy()
@@ -46,7 +47,7 @@ namespace Logic
         {
             if (_enemySlain)
             {
-                playerProgress.KillData.AddSafe(_id);
+                playerProgress.KillData.AddSafe(ID);
             }
         }
 

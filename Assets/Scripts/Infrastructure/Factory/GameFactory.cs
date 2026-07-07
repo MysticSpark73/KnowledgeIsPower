@@ -2,6 +2,7 @@
 using Enemies;
 using Infrastructure.AssetsManagement;
 using Infrastructure.Services.PersistentProgress;
+using Logic.EnemySpawners;
 using Services;
 using StaticData;
 using UI;
@@ -31,16 +32,6 @@ namespace Infrastructure.Factory
             _progressService = progressService;
         }
 
-        public void Register(ISavedProgressReader progressReader)
-        {
-            ProgressReaders.Add(progressReader);
-            
-            if (progressReader is ISavedProgress savedProgress)
-            {
-                ProgressWriters.Add(savedProgress);
-            }
-        }
-
         public GameObject CreateHero(Vector3 position)
         {
             HeroObject = InstantiateRegistered(AssetsPath.HeroPrefabPath, position);
@@ -52,17 +43,6 @@ namespace Infrastructure.Factory
             GameObject hud = InstantiateRegistered(AssetsPath.HUDPrefabPath);
             InitializeLootCounter(hud);
             return hud;
-        }
-
-        private void InitializeLootCounter(GameObject hud)
-        {
-            LootCounter lootCounter = hud.GetComponentInChildren<LootCounter>();
-            if (lootCounter == null)
-            {
-                Debug.LogError($"LootCounter {hud.name} not found!");
-                return;
-            }
-            Register(lootCounter);
         }
 
         public GameObject CreateMonster(MonsterTypeID monsterTypeID, Transform parent)
@@ -94,6 +74,25 @@ namespace Infrastructure.Factory
                 return lootTrigger;
             }
             return null;
+        }
+
+        public EnemySpawnPoint CreateEnemySpawner(string id, Vector3 position, MonsterTypeID monsterType)
+        {
+            GameObject spawnerObject = InstantiateRegistered(AssetsPath.Spawner, position);
+            EnemySpawnPoint spawnPoint = spawnerObject.GetComponent<EnemySpawnPoint>();
+            spawnPoint.InitializeFromFactory(id, monsterType, this);
+            return spawnPoint;
+        }
+
+        private void InitializeLootCounter(GameObject hud)
+        {
+            LootCounter lootCounter = hud.GetComponentInChildren<LootCounter>();
+            if (lootCounter == null)
+            {
+                Debug.LogError($"LootCounter {hud.name} not found!");
+                return;
+            }
+            Register(lootCounter);
         }
 
         private void InitializeMonsterHealth(GameObject monster, MonsterStaticData monsterData)
@@ -192,6 +191,16 @@ namespace Infrastructure.Factory
             foreach (var progressReader in gameObject.transform.GetComponentsInChildren<ISavedProgressReader>())
             {
                 Register(progressReader);
+            }
+        }
+
+        private void Register(ISavedProgressReader progressReader)
+        {
+            ProgressReaders.Add(progressReader);
+            
+            if (progressReader is ISavedProgress savedProgress)
+            {
+                ProgressWriters.Add(savedProgress);
             }
         }
 

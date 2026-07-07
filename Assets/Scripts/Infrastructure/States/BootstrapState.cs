@@ -12,7 +12,6 @@ namespace Infrastructure.States
     public class BootstrapState : IState
     {
         private const string BootstrapSceneName = "Bootstrap";
-        private const string MainSceneName = "Main";
         
         private readonly GameStateMachine _gameStateMachine;
         private readonly SceneLoader _sceneLoader;

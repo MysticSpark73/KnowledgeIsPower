@@ -7,9 +7,6 @@ namespace Logic
         public string ID => _id;
         [SerializeField] private string _id;
 
-        public void SetId(string id)
-        {
-            _id = id;
-        }
+        public void SetId(string id) => _id = id;
     }
 }

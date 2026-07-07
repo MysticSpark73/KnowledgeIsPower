@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Enemies;
 using Infrastructure.Services;
 using Infrastructure.Services.PersistentProgress;
+using Logic;
+using Logic.EnemySpawners;
 using StaticData;
 using UnityEngine;
 
@@ -16,6 +18,6 @@ namespace Infrastructure.Factory
         List<ISavedProgress> ProgressWriters { get; }
         GameObject CreateMonster(MonsterTypeID monsterTypeID, Transform parent);
         LootTrigger CreateLoot();
-        void Register(ISavedProgressReader progressReader);
+        EnemySpawnPoint CreateEnemySpawner(string id, Vector3 position, MonsterTypeID monsterType); 
     }
 }
