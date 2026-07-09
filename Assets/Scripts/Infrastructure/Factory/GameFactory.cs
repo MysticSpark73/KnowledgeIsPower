@@ -6,6 +6,8 @@ using Logic.EnemySpawners;
 using Services;
 using StaticData;
 using UI;
+using UI.Elements;
+using UI.Services.Windows;
 using UnityEngine;
 using UnityEngine.AI;
 using Object = UnityEngine.Object;
@@ -18,17 +20,20 @@ namespace Infrastructure.Factory
         private readonly IStaticDataService _staticDataService;
         private readonly IPersistentProgressService _progressService;
         private readonly IRandomService _randomService;
+        private readonly IWindowsService _windowsService;
 
         public List<ISavedProgressReader> ProgressReaders { get; } = new List<ISavedProgressReader>();
         public List<ISavedProgress> ProgressWriters { get; } = new List<ISavedProgress>();
 
         private GameObject HeroObject { get; set; }
 
-        public GameFactory(IAssetsProvider assetsProvider, IStaticDataService staticDataService,  IPersistentProgressService progressService, IRandomService randomService)
+        public GameFactory(IAssetsProvider assetsProvider, IStaticDataService staticDataService,
+            IPersistentProgressService progressService, IRandomService randomService, IWindowsService windowsService)
         {
             _assetsProvider = assetsProvider;
             _staticDataService = staticDataService;
             _randomService = randomService;
+            _windowsService = windowsService;
             _progressService = progressService;
         }
 
@@ -42,12 +47,13 @@ namespace Infrastructure.Factory
         {
             GameObject hud = InstantiateRegistered(AssetsPath.HUDPrefabPath);
             InitializeLootCounter(hud);
+            InitializeOpenWindowButtons(hud);
             return hud;
         }
 
         public GameObject CreateMonster(MonsterTypeID monsterTypeID, Transform parent)
         {
-            MonsterStaticData monsterData = _staticDataService.GetData(monsterTypeID);
+            MonsterStaticData monsterData = _staticDataService.GetMonsterData(monsterTypeID);
             if (monsterData == null)
             {
                 Debug.LogError($"MonsterData with ID {monsterTypeID} not found!");
@@ -93,6 +99,14 @@ namespace Infrastructure.Factory
                 return;
             }
             Register(lootCounter);
+        }
+
+        private void InitializeOpenWindowButtons(GameObject hud)
+        {
+            foreach (var openWindowButton in hud.GetComponentsInChildren<OpenWindowButton>())
+            {
+                openWindowButton.Initialize(_windowsService);
+            }
         }
 
         private void InitializeMonsterHealth(GameObject monster, MonsterStaticData monsterData)

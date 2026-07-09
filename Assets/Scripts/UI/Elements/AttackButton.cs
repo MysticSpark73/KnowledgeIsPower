@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
+namespace UI.Elements
 {
     [RequireComponent(typeof(Button))]
     public class AttackButton : MonoBehaviour

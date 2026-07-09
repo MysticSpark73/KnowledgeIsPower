@@ -6,7 +6,8 @@ using Infrastructure.Factory;
 using Infrastructure.Services.PersistentProgress;
 using Logic;
 using StaticData;
-using UI;
+using UI.Elements;
+using UI.Services.Factory;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -22,9 +23,10 @@ namespace Infrastructure.States
         private readonly IGameFactory _gameFactory;
         private readonly IPersistentProgressService _progressService;
         private readonly IStaticDataService _staticDataService;
+        private readonly IUIFactory _uiFactory;
 
         public LoadLevelState(GameStateMachine gameStateMachine, SceneLoader sceneLoader, LoadingCurtain loadingCurtain,
-            IGameFactory gameFactory, IPersistentProgressService progressService, IStaticDataService staticDataService)
+            IGameFactory gameFactory, IPersistentProgressService progressService, IStaticDataService staticDataService, IUIFactory uiFactory)
         {
             _gameStateMachine = gameStateMachine;
             _sceneLoader = sceneLoader;
@@ -32,6 +34,7 @@ namespace Infrastructure.States
             _gameFactory = gameFactory;
             _progressService = progressService;
             _staticDataService = staticDataService;
+            _uiFactory = uiFactory;
         }
 
         public void Enter(string payload)
@@ -48,11 +51,14 @@ namespace Infrastructure.States
 
         private void OnMainSceneLoaded()
         {
+            InitUIRoot();
             InitGameWorld();
             InformProgressReaders();
             
             _gameStateMachine.Enter<GameLoopState>();
         }
+
+        private void InitUIRoot() => _uiFactory.CreateUIRoot();
 
         private void InitGameWorld()
         {
