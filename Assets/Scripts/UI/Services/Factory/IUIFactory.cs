@@ -1,5 +1,6 @@
 ﻿using Infrastructure.Services;
 using UI.Windows;
+using UI.Windows.Shop;
 
 namespace UI.Services.Factory
 {

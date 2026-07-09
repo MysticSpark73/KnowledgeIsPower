@@ -1,6 +1,7 @@
 ﻿using Infrastructure.AssetsManagement;
 using Infrastructure.Factory;
 using Infrastructure.Services;
+using Infrastructure.Services.Ads;
 using Infrastructure.Services.PersistentProgress;
 using Infrastructure.Services.SaveLoad;
 using Services;
@@ -38,6 +39,7 @@ namespace Infrastructure.States
         private void RegisterServices()
         {
             RegisterStaticDataService();
+            RegisterAdsServices();
 
             _serviceProvider.RegisterSingle<IInputService>(CreateInputService());
             _serviceProvider.RegisterSingle<IRandomService>(new RandomService());
@@ -46,7 +48,8 @@ namespace Infrastructure.States
             _serviceProvider.RegisterSingle<IUIFactory>(new UIFactory(
                 _serviceProvider.Single<IAssetsProvider>(),
                 _serviceProvider.Single<IStaticDataService>(),
-                _serviceProvider.Single<IPersistentProgressService>()));
+                _serviceProvider.Single<IPersistentProgressService>(),
+                _serviceProvider.Single<IAdsService>()));
             _serviceProvider.RegisterSingle<IWindowsService>(new WindowsService(
                 _serviceProvider.Single<IUIFactory>()));
             _serviceProvider.RegisterSingle<IGameFactory>(new GameFactory(
@@ -58,6 +61,7 @@ namespace Infrastructure.States
             _serviceProvider.RegisterSingle<ISaveLoadService>(new SaveLoadService(
                 _serviceProvider.Single<IPersistentProgressService>(),
                 _serviceProvider.Single<IGameFactory>()));
+            
         }
 
         private void RegisterStaticDataService()
@@ -65,6 +69,13 @@ namespace Infrastructure.States
             var staticDataService = new StaticDataService();
             staticDataService.LoadData();
             _serviceProvider.RegisterSingle<IStaticDataService>(staticDataService);
+        }
+
+        private void RegisterAdsServices()
+        {
+            var adsService = new AdsService();
+            adsService.Initialize();
+            _serviceProvider.RegisterSingle<IAdsService>(adsService);
         }
 
         private void EnterLoadProgressState() => _gameStateMachine.Enter<LoadProgressState>();

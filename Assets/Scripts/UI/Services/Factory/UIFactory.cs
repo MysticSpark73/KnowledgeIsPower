@@ -1,8 +1,9 @@
 ﻿using Infrastructure.AssetsManagement;
+using Infrastructure.Services.Ads;
 using Infrastructure.Services.PersistentProgress;
 using StaticData;
 using UI.Services.Windows;
-using UI.Windows;
+using UI.Windows.Shop;
 using UnityEngine;
 
 namespace UI.Services.Factory
@@ -14,13 +15,16 @@ namespace UI.Services.Factory
         private readonly IAssetsProvider _assetsProvider;
         private readonly IStaticDataService _staticData;
         private readonly IPersistentProgressService _progressService;
+        private readonly IAdsService _adsService;
         private Transform _uiRoot;
 
-        public UIFactory(IAssetsProvider assetsProvider, IStaticDataService staticData, IPersistentProgressService progressService)
+        public UIFactory(IAssetsProvider assetsProvider, IStaticDataService staticData,
+            IPersistentProgressService progressService, IAdsService adsService)
         {
             _assetsProvider = assetsProvider;
             _staticData = staticData;
             _progressService = progressService;
+            _adsService = adsService;
         }
 
         public void CreateUIRoot()
@@ -35,7 +39,7 @@ namespace UI.Services.Factory
             
             if (shopWindow != null)
             {
-                shopWindow.Initialize(_progressService);
+                shopWindow.Initialize(_progressService, _adsService);
             }
             
             return shopWindow;
