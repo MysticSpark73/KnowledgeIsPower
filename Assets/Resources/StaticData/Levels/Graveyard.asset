@@ -14,13 +14,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::StaticData.LevelStaticData
   LevelKey: Main
   EnemySpawnerDatas:
+  - Id: Main_522432cb-df10-45bf-b3d0-733f885691ea
+    MonsterTypeID: 1
+    Position: {x: 20, y: 2.67, z: 15}
   - Id: Main_2842937b-8d53-4771-8ea6-56b449adfca7
     MonsterTypeID: 0
     Position: {x: 7, y: 0.439, z: -10}
-  - Id: Main_7a9f137d-7e16-4eec-9c27-4afea3ddc657
-    MonsterTypeID: 0
-    Position: {x: 13, y: 0.5, z: -2}
   - Id: Main_71677040-aa34-4a9e-b954-364b90351426
     MonsterTypeID: 0
     Position: {x: 2, y: 0.65, z: -15}
+  - Id: Main_7a9f137d-7e16-4eec-9c27-4afea3ddc657
+    MonsterTypeID: 0
+    Position: {x: 13, y: 0.5, z: -2}
   InitialHeroPosition: {x: -5, y: 0.1, z: -7}

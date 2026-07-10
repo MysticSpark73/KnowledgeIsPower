@@ -1,0 +1,24 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e33e3285b734343a2e83e9013ed9f08, type: 3}
+  m_Name: Golem
+  m_EditorClassIdentifier: Assembly-CSharp::StaticData.MonsterStaticData
+  Type: 1
+  Health: 10
+  MoveSpeed: 3
+  AttackCooldown: 5
+  WeaponRadius: 1
+  AttackRange: 1
+  Damage: 30
+  MinLoot: 10
+  MaxLoot: 30
+  Prefab: {fileID: 5410230423350145712, guid: d7a34a1ab7a02c8488a6559b2c52b98b, type: 3}
