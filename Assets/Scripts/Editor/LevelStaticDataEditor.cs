@@ -10,6 +10,8 @@ namespace Editor
     [CustomEditor(typeof(LevelStaticData))]
     public class LevelStaticDataEditor : UnityEditor.Editor
     {
+        private const string PlayerSpawnPointTag = "PlayerSpawnPoint";
+        
         public override void OnInspectorGUI()
         {
             base.OnInspectorGUI();
@@ -29,6 +31,8 @@ namespace Editor
                     new EnemySpawnerData(i.GetData().id, i.GetData().monsterType, i.transform.position)).ToList();
             
             levelData.LevelKey = SceneManager.GetActiveScene().name;
+            GameObject playerSpawnPoint = GameObject.FindGameObjectWithTag(PlayerSpawnPointTag);
+            levelData.InitialHeroPosition = playerSpawnPoint.transform.position;
             EditorUtility.SetDirty(target);
         }
     }

@@ -2,9 +2,9 @@
 {
     public static class AssetsPath
     {
-        public const string HeroPrefabPath = "Characters/Hero";
-        public const string HUDPrefabPath = "UI/HUD";
-        public const string Loot = "Loot/Loot";
-        public const string Spawner = "Characters/Enemies/EnemySpawnPoint";
+        public const string HeroPrefabPath = "Hero";
+        public const string HUDPrefabPath = "HUD";
+        public const string Loot = "Loot";
+        public const string Spawner = "EnemySpawnPoint";
     }
 }

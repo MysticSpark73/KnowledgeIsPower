@@ -8,5 +8,6 @@ namespace StaticData
     {
         public string LevelKey;
         public List<EnemySpawnerData> EnemySpawnerDatas;
+        public Vector3 InitialHeroPosition;
     }
 }

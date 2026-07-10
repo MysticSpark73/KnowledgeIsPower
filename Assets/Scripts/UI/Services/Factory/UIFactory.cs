@@ -1,4 +1,5 @@
-﻿using Infrastructure.AssetsManagement;
+﻿using System.Threading.Tasks;
+using Infrastructure.AssetsManagement;
 using Infrastructure.Services.Ads;
 using Infrastructure.Services.PersistentProgress;
 using StaticData;
@@ -10,7 +11,7 @@ namespace UI.Services.Factory
 {
     public class UIFactory : IUIFactory
     {
-        private const string UIRootPath = "UI/UIRoot";
+        private const string UIRootPath = "UIRoot";
         
         private readonly IAssetsProvider _assetsProvider;
         private readonly IStaticDataService _staticData;
@@ -27,9 +28,10 @@ namespace UI.Services.Factory
             _adsService = adsService;
         }
 
-        public void CreateUIRoot()
+        public async Task CreateUIRoot()
         {
-            _uiRoot = _assetsProvider.InstantiatePrefabFromResources(UIRootPath).transform;
+            GameObject uiRootObject = await _assetsProvider.InstantiateFromAddressables(UIRootPath);
+            _uiRoot = uiRootObject.transform;
         }
 
         public ShopWindow CreateShop()

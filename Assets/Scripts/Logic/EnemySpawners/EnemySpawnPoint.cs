@@ -1,4 +1,5 @@
-﻿using Data;
+﻿using System.Threading.Tasks;
+using Data;
 using Enemies;
 using Infrastructure.Factory;
 using Infrastructure.Services.PersistentProgress;
@@ -36,9 +37,9 @@ namespace Logic.EnemySpawners
             _factory = factory;
         }
 
-        private void SpawnEnemy()
+        private async void SpawnEnemy()
         {
-            var monster = _factory.CreateMonster(_monsterTypeID, transform);
+            var monster = await _factory.CreateMonster(_monsterTypeID, transform);
             _enemyDeath = monster.GetComponent<EnemyDeath>();
             _enemyDeath.OnDeath += OnEnemyDied;
         }

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using Enemies;
 using Infrastructure.Services;
 using Infrastructure.Services.PersistentProgress;
-using Logic;
 using Logic.EnemySpawners;
 using StaticData;
 using UnityEngine;
@@ -12,12 +12,13 @@ namespace Infrastructure.Factory
 {
     public interface IGameFactory : IService, IDisposable
     {
-        GameObject CreateHero(Vector3 position);
-        GameObject CreateHUD();
+        Task<GameObject> CreateHeroAsync(Vector3 position);
+        Task<GameObject> CreateHUDAsync();
         List<ISavedProgressReader> ProgressReaders { get; }
         List<ISavedProgress> ProgressWriters { get; }
-        GameObject CreateMonster(MonsterTypeID monsterTypeID, Transform parent);
-        LootTrigger CreateLoot();
-        EnemySpawnPoint CreateEnemySpawner(string id, Vector3 position, MonsterTypeID monsterType); 
+        Task<GameObject> CreateMonster(MonsterTypeID monsterTypeID, Transform parent);
+        Task<LootTrigger> CreateLoot();
+        Task<EnemySpawnPoint> CreateEnemySpawner(string id, Vector3 position, MonsterTypeID monsterType);
+        Task WarmUp();
     }
 }

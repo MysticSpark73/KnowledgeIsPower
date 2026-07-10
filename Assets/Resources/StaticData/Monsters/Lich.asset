@@ -21,4 +21,9 @@ MonoBehaviour:
   Damage: 10
   MinLoot: 1
   MaxLoot: 10
-  Prefab: {fileID: 2291113173425709629, guid: f190c9bac4262ac4780221feba4ca5b1, type: 3}
+  PrefabReference:
+    m_AssetGUID: f190c9bac4262ac4780221feba4ca5b1
+    m_SubObjectName: 
+    m_SubObjectType: 
+    m_SubObjectGUID: 
+    m_EditorAssetChanged: 0

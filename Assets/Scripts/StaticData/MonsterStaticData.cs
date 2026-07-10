@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.AddressableAssets;
 
 namespace StaticData
 {
@@ -15,7 +16,7 @@ namespace StaticData
         [Header("Loot")]
         public int MinLoot;
         public int MaxLoot;
-        [Header("Prefab")]
-        public GameObject Prefab;
+        [Header("Asset Reference")]
+        public AssetReferenceGameObject PrefabReference;
     }
 }

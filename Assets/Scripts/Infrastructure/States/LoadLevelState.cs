@@ -1,4 +1,5 @@
-﻿using Data;
+﻿using System.Threading.Tasks;
+using Data;
 using DefaultNamespace.Camera;
 using Enemies;
 using Hero;
@@ -15,8 +16,6 @@ namespace Infrastructure.States
 {
     public class LoadLevelState : IPayloadState<string>
     {
-        private const string PlayerSpawnPointTag = "PlayerSpawnPoint";
-
         private readonly GameStateMachine _gameStateMachine;
         private readonly SceneLoader _sceneLoader;
         private readonly LoadingCurtain _loadingCurtain;
@@ -41,6 +40,7 @@ namespace Infrastructure.States
         {
             _loadingCurtain.Show();
             _gameFactory.Dispose();
+            _gameFactory.WarmUp();
             _sceneLoader.LoadScene(payload, OnMainSceneLoaded);
         }
 
@@ -49,46 +49,50 @@ namespace Infrastructure.States
             _loadingCurtain.Hide();
         }
 
-        private void OnMainSceneLoaded()
+        private async void OnMainSceneLoaded()
         {
-            InitUIRoot();
-            InitGameWorld();
+            await InitUIRoot();
+            await InitGameWorld();
             InformProgressReaders();
             
             _gameStateMachine.Enter<GameLoopState>();
         }
 
-        private void InitUIRoot() => _uiFactory.CreateUIRoot();
+        private async Task InitUIRoot() => await _uiFactory.CreateUIRoot();
 
-        private void InitGameWorld()
+        private async Task InitGameWorld()
         {
-            InitSpawners();
-            SpawnUnclaimedLoot();
-            GameObject playerSpawnPoint = GameObject.FindGameObjectWithTag(PlayerSpawnPointTag);
-            GameObject hero = _gameFactory.CreateHero(playerSpawnPoint.transform.position);
-            GameObject hud = _gameFactory.CreateHUD();
+            LevelStaticData levelData = GetLevelStaticData();
+
+            await InitSpawners(levelData);
+            await SpawnUnclaimedLoot();
+            
+            GameObject hero = await _gameFactory.CreateHeroAsync(levelData.InitialHeroPosition);
+            GameObject hud = await _gameFactory.CreateHUDAsync();
             ActorUI actorUI = hud.GetComponent<ActorUI>();
             actorUI.Construct(hero.GetComponent<HeroHealth>());
             
             SetupCameraFollow(hero);
         }
 
-        private void InitSpawners()
+        private LevelStaticData GetLevelStaticData()
         {
-            string sceneKey = SceneManager.GetActiveScene().name;
-            LevelStaticData levelData = _staticDataService.GetLevelData(sceneKey);
+            return _staticDataService.GetLevelData(SceneManager.GetActiveScene().name);
+        }
 
+        private async Task InitSpawners(LevelStaticData levelData)
+        {
             foreach (var spawnerData in levelData.EnemySpawnerDatas)
             {
-                _gameFactory.CreateEnemySpawner(spawnerData.Id, spawnerData.Position, spawnerData.MonsterTypeID);
+                await _gameFactory.CreateEnemySpawner(spawnerData.Id, spawnerData.Position, spawnerData.MonsterTypeID);
             }
         }
 
-        private void SpawnUnclaimedLoot()
+        private async Task SpawnUnclaimedLoot()
         {
             foreach (var unclaimedLoot in _progressService.PlayerProgress.WorldData.LootData.UnclaimedLootDatas)
             {
-                LootTrigger loot = _gameFactory.CreateLoot();
+                LootTrigger loot = await _gameFactory.CreateLoot();
                 loot.SetLootData(new LootData(unclaimedLoot.Value));
                 loot.transform.position = unclaimedLoot.Position.ToVector3();
                 loot.transform.rotation = Quaternion.Euler(unclaimedLoot.Rotation.ToVector3());

@@ -36,9 +36,9 @@ namespace Enemies
             _enemyDeath.OnDeath -= SpawnLoot;
         }
 
-        private void SpawnLoot() 
+        private async void SpawnLoot() 
         {
-            LootTrigger lootTrigger = _factory.CreateLoot();
+            LootTrigger lootTrigger = await _factory.CreateLoot();
             if (lootTrigger == null)
             {
                 Debug.LogWarning("Loot object is null.");
