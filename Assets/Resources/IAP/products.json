@@ -1,0 +1,40 @@
+{
+  "Configs": [
+    {
+      "Id" : "skulls_100",
+      "ProductType" : 0,
+      "MaxPurchaseCount" : 3,
+      "ItemType" : 1,
+      "Quantity" : 100,
+      "Price" : "$2.99",
+      "IconPath" : "iap_icon_12"
+    },
+    {
+      "Id" : "skulls_10",
+      "ProductType" : 0,
+      "MaxPurchaseCount" : 20,
+      "ItemType" : 1,
+      "Quantity" : 10,
+      "Price" : "$0.99",
+      "IconPath" : "iap_icon_2"
+    },
+    {
+      "Id" : "skulls_666",
+      "ProductType" : 0,
+      "MaxPurchaseCount" : 1,
+      "ItemType" : 1,
+      "Quantity" : 666,
+      "Price" : "$666.999",
+      "IconPath" : "iap_icon_18"
+    },
+    {
+      "Id" : "skulls_250",
+      "ProductType" : 0,
+      "MaxPurchaseCount" : 5,
+      "ItemType" : 1,
+      "Quantity" : 250,
+      "Price" : "$6.99",
+      "IconPath" : "iap_icon_3"
+    }
+  ]
+}

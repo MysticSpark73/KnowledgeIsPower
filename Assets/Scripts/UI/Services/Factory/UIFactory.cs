@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Infrastructure.AssetsManagement;
 using Infrastructure.Services.Ads;
+using Infrastructure.Services.IAP;
 using Infrastructure.Services.PersistentProgress;
 using StaticData;
 using UI.Services.Windows;
@@ -17,15 +18,17 @@ namespace UI.Services.Factory
         private readonly IStaticDataService _staticData;
         private readonly IPersistentProgressService _progressService;
         private readonly IAdsService _adsService;
+        private readonly IIAPService _iapService;
         private Transform _uiRoot;
 
         public UIFactory(IAssetsProvider assetsProvider, IStaticDataService staticData,
-            IPersistentProgressService progressService, IAdsService adsService)
+            IPersistentProgressService progressService, IAdsService adsService, IIAPService iapService)
         {
             _assetsProvider = assetsProvider;
             _staticData = staticData;
             _progressService = progressService;
             _adsService = adsService;
+            _iapService = iapService;
         }
 
         public async Task CreateUIRoot()
@@ -41,7 +44,7 @@ namespace UI.Services.Factory
             
             if (shopWindow != null)
             {
-                shopWindow.Initialize(_progressService, _adsService);
+                shopWindow.Initialize(_progressService, _adsService, _assetsProvider, _iapService);
             }
             
             return shopWindow;

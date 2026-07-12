@@ -20,6 +20,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 32bf879ab52687044a6344616cd23da9
+    m_Address: iap_icon_12
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: 5cb3bbd8da5ab944ab5862bd2c5863ea
     m_Address: HUD
     m_ReadOnly: 0
@@ -35,6 +40,11 @@ MonoBehaviour:
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: 96993e0a1f236534e81a3b39ecc4136f
+    m_Address: iap_icon_2
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: b724572a0cc2d0347b8d4c2b256cc75f
     m_Address: UIRoot
     m_ReadOnly: 0
@@ -42,6 +52,21 @@ MonoBehaviour:
     FlaggedDuringContentUpdateRestriction: 0
   - m_GUID: d7a34a1ab7a02c8488a6559b2c52b98b
     m_Address: Golem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e3220351ad8babf42a0868e77df5a761
+    m_Address: ShopItem
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: e8364240a3c89d74d9339dcd685ef462
+    m_Address: iap_icon_3
+    m_ReadOnly: 0
+    m_SerializedLabels: []
+    FlaggedDuringContentUpdateRestriction: 0
+  - m_GUID: f0155547dd0ac3b4ca6c846f78cfe522
+    m_Address: iap_icon_18
     m_ReadOnly: 0
     m_SerializedLabels: []
     FlaggedDuringContentUpdateRestriction: 0

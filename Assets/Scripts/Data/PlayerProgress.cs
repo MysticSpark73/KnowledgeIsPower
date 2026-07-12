@@ -9,6 +9,7 @@ namespace Data
         public HeroState HeroState;
         public HeroStats HeroStats;
         public KillData KillData;
+        public PurchaseData PurchaseData;
 
         public PlayerProgress(string defaultSceneName)
         {
@@ -16,6 +17,7 @@ namespace Data
             HeroState = new HeroState();
             HeroStats = new HeroStats();
             KillData = new KillData();
+            PurchaseData = new PurchaseData();
         }
 
     }

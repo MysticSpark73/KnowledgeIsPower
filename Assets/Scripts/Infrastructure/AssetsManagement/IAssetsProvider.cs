@@ -9,6 +9,7 @@ namespace Infrastructure.AssetsManagement
     {
         Task<GameObject> InstantiateFromAddressables(string address);
         Task<GameObject> InstantiateFromAddressables(string address, Vector3 position);
+        Task<GameObject> InstantiateFromAddressables(string address, Transform parent);
         Task<T> Load<T>(AssetReference assetReference) where T : class;
         Task<T> Load<T>(string address) where T : class;
         void Initialize();

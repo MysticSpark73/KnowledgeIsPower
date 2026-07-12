@@ -21,6 +21,11 @@ namespace Infrastructure.AssetsManagement
             return Addressables.InstantiateAsync(address, position, Quaternion.identity).Task;
         }
 
+        public Task<GameObject> InstantiateFromAddressables(string address, Transform parent)
+        {
+            return Addressables.InstantiateAsync(address, parent).Task;
+        }
+
         public void Initialize()
         {
             Addressables.InitializeAsync();
